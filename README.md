@@ -7,7 +7,6 @@ A robust, reproducible development environment template using **Pixi**. This set
 ```text
 .
 ├── pixi.toml            # Project configuration and dependencies
-├── pixi.lock            # Lockfile for reproducible environments
 ├── README.md            # Project documentation
 └── script/              # Verification scripts
     ├── check.sh         # Smart environment checking script
