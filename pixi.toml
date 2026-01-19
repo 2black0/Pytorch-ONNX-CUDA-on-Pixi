@@ -22,6 +22,8 @@ pyqt6 = "*"
 kornia = "*"
 tqdm = "*"
 scipy = "*"
+gtsam = "*"
+pyceres = ">=2.6,<3"
 
 [pypi-dependencies]
 # --- OPTION 1: Standard CPU (Uncomment for portability) ---
@@ -30,6 +32,10 @@ scipy = "*"
 # --- OPTION 2: System CUDA
 # use pixi run link-opencv
 evo = "*"
+g2o-python = "*"
+theseus-ai = "*"
+rerun = "*"
+pypose = ">=0.7.5, <0.8"
 
 [feature.gpu.system-requirements]
 cuda = "12.0" 
