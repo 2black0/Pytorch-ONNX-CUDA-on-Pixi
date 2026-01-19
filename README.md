@@ -9,9 +9,11 @@ A robust, reproducible development environment template using **Pixi**. This set
 ├── pixi.toml            # Project configuration and dependencies
 ├── README.md            # Project documentation
 └── script/              # Verification scripts
-    ├── check.sh         # Smart environment checking script
-    ├── test_ort_cuda.py # ONNX Runtime CUDA inference test
-    └── test_torch_cuda.py # PyTorch CUDA computation test
+    ├── check.sh                      # Smart environment checking script
+    ├── link_opencv.sh                # OpenCV system linker (CUDA build)
+    ├── opencv_cpu_cuda_benchmark.py  # OpenCV CPU vs GPU benchmark
+    ├── test_ort_cuda.py              # ONNX Runtime CUDA inference test
+    └── test_torch_cuda.py            # PyTorch CUDA computation test
 
 ```
 
@@ -32,7 +34,35 @@ cd Pytorch-ONNX-CUDA-on-Pixi
 ```
 
 
-2. **Install dependencies:**
+2. **Choose OpenCV Setup:**
+
+This project supports two OpenCV configurations:
+
+### **Option 1: Standard OpenCV (CPU - Recommended for Portability)**
+For standard CPU-based OpenCV with contrib modules, uncomment in `pixi.toml`:
+```toml
+[pypi-dependencies]
+opencv-contrib-python = ">=4.8"
+```
+
+### **Option 2: System CUDA-Enabled OpenCV (For GPU Acceleration)**
+If you have manually compiled OpenCV with CUDA support:
+
+1. Keep `opencv-contrib-python` commented out in `pixi.toml`
+2. After running `pixi install`, create a symlink to your system OpenCV:
+```bash
+pixi run link-opencv
+```
+
+This script will:
+- Search for your system-compiled OpenCV `.so` file in `/usr/local/lib`
+- Create a symlink in the Pixi environment to use the CUDA-enabled build
+- Verify that CUDA devices are accessible via `cv2.cuda.getCudaEnabledDeviceCount()`
+
+**Note:** Option 2 requires Python 3.10 in both system and Pixi environment to ensure ABI compatibility.
+
+
+3. **Install dependencies:**
 Pixi will automatically set up the environment including CUDA libraries, Python, and drivers.
 ```bash
 pixi install
@@ -42,7 +72,7 @@ pixi install
 
 ## ✅ Verification & Usage
 
-This project includes three verification scripts to ensure your environment is fully hardware-accelerated.
+This project includes verification scripts to ensure your environment is fully hardware-accelerated.
 
 ### 1. Smart Environment Check
 
@@ -148,6 +178,40 @@ Providers Available  : ['TensorrtExecutionProvider', 'CUDAExecutionProvider', 'C
 ✅ ONNX Runtime GPU is working correctly!
    - Cleanup: Removed temp model file.
 ```
+
+### 4. OpenCV CUDA Benchmark (Optional)
+
+If using **Option 2** (System CUDA-Enabled OpenCV), benchmark CPU vs GPU performance:
+
+```bash
+pixi run python ./script/opencv_cpu_cuda_benchmark.py
+```
+
+**Expected Output:**
+
+```text
+OpenCV Version: 4.x.x
+Device: ...
+
+Preparing image (2160, 3840, 3) (~25MB)...
+Performing GPU Warm-up... Done.
+
+CPU Average Time: 45.23 ms
+GPU (Total) Time: 12.34 ms (Upload + Process + Download)
+GPU (Compute) Time: 2.15 ms (Without data transfer)
+
+--- ANALYSIS ---
+CPU Speed    : 22.1 FPS
+GPU (Pipeline): 81.0 FPS (Bottleneck at PCIe)
+GPU (Compute) : 465.1 FPS (True Potential)
+
+🚀 Potential Speedup for Complex Algorithms (Pure Compute): 21.03x
+```
+
+**Key Insights:**
+- **GPU (Total)**: Includes PCIe data transfer overhead - realistic for camera frame processing
+- **GPU (Compute)**: Pure GPU processing speed - achievable when data stays on GPU (e.g., SLAM pipelines)
+- Speedup increases significantly for complex computer vision algorithms running entirely on GPU
 
 ## 🧩 Key Dependencies
 
