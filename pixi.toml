@@ -7,10 +7,11 @@ platforms = ["linux-64"]
 env = { PYTHONNOUSERSITE = "1", LD_LIBRARY_PATH = "$CONDA_PREFIX/lib" }
 
 [tasks]
-check = "bash script/check.sh"
-test-torch = "python script/test_torch_cuda.py"
-test-onnx = "python script/test_ort_cuda.py"
-link-opencv = "bash script/link_opencv.sh"
+check = "bash scripts/check.sh"
+test-torch = "python scripts/test_torch_cuda.py"
+test-onnx = "python scripts/test_ort_cuda.py"
+clean-libs = "bash scripts/clean_env.sh"
+link-opencv = { cmd = "bash scripts/link_opencv.sh", depends-on = ["clean-libs"] }
 
 [dependencies]
 python = "3.10.*"
@@ -23,7 +24,8 @@ kornia = "*"
 tqdm = "*"
 scipy = "*"
 gtsam = "*"
-pyceres = ">=2.6,<3"
+pyceres = "*"
+triton = "*"
 
 [pypi-dependencies]
 # --- OPTION 1: Standard CPU (Uncomment for portability) ---
@@ -35,7 +37,7 @@ evo = "*"
 g2o-python = "*"
 theseus-ai = "*"
 rerun = "*"
-pypose = ">=0.7.5, <0.8"
+pypose = "*"
 
 [feature.gpu.system-requirements]
 cuda = "12.0" 
