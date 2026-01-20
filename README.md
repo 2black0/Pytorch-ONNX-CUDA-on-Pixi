@@ -5,108 +5,102 @@ Reproducible CUDA-enabled development environment using **Pixi** with PyTorch, O
 ## 🎯 What's Included
 
 - **Deep Learning**: PyTorch + ONNX Runtime (CUDA accelerated)
-- **Computer Vision**: OpenCV, Kornia
+- **Computer Vision**: OpenCV (CUDA accelerated), Kornia
 - **Optimization Solvers**: GTSAM, g2o, Ceres, Theseus, PyPose
 - **Visualization**: Matplotlib, Rerun
 - **Trajectory Tools**: EVO
 
 ## 🛠 Prerequisites
 
-- **Linux** (Ubuntu/Debian x86_64)
-- **NVIDIA Drivers** (535+ for CUDA 12)
+- **Linux** (Ubuntu 22.04+ recommended)
+- **NVIDIA Drivers** (580+ for CUDA 12.9)
 - **[Pixi](https://pixi.sh/)** package manager
 
-## 📦 Quick Start
+## 📦 Clone
 
 ```bash
 # Clone repository
 git clone https://github.com/2black0/Pytorch-ONNX-CUDA-on-Pixi.git
 cd Pytorch-ONNX-CUDA-on-Pixi
-
-# Install all dependencies
-pixi install
-
-# Verify installation
-pixi run check
 ```
 
+## 🧰 OpenCV Setup Options
 
-
-## 📊 Optimization Solvers
-
-This environment includes multiple state-of-the-art optimization libraries for robotics and SLAM:
-
-| Solver | Type | Device | Best For |
-|--------|------|--------|----------|
-| **GTSAM** | Factor Graph | CPU | General SLAM, sensor fusion |
-| **g2o** | Graph Optimization | CPU | Pose graph optimization |
-| **Ceres** | Non-linear LS | CPU | Bundle adjustment, calibration |
-| **Theseus** | Differentiable | GPU | Learning-based optimization |
-| **PyPose** | Lie Group | GPU | Differentiable robotics |
-
-**Benchmark solvers:**
 ```bash
-pixi run python script/benchmark_solver.py
-```
-
-## ✅ Testing & Verification
-
-### Environment Check
-```bash
-pixi run check
-```
-
-Validates all packages, versions, and GPU acceleration.
-
-### PyTorch CUDA
-```bash
-pixi run test-torch
-```
-
-### ONNX Runtime CUDA
-```bash
-pixi run test-onnx
-```
-
-### OpenCV CUDA (Optional)
-
-For GPU-accelerated OpenCV:
-
-1. Compile OpenCV with CUDA support (Python 3.10)
-2. Link to Pixi environment:
-```bash
+# Optional: Link system OpenCV with CUDA support, you must have compiled it beforehand
 pixi run link-opencv
+
+# if not linking OpenCV, open comment on 'opencv-contrib-python' in pixi.toml and run:
+pixi install
 ```
 
-3. Benchmark CPU vs GPU:
+## ✅ Verify installation
+
 ```bash
-pixi run python script/opencv_cpu_cuda_benchmark.py
+pixi run check
 ```
 
-## 🔧 Project Structure
+with OpenCV CUDA supported will produce output similar to:
 
+```bash
+✨ Pixi task (check in default): bash scripts/check.sh
+=======================================================
+🔍 SMART ENVIRONMENT CHECKER (Deep Scan)
+=======================================================
+PACKAGE                   | IMPORT NAME     | VERSION         | PATH
+--------------------------------------------------------------------------------------------------------------
+python                    | sys             | 3.10.19         | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/bin/python
+evo                       | evo             | 1.34.2          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/evo/__init__.py
+g2o-python                | g2o             | 0.0.12          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/g2o/__init__.py
+gtsam                     | gtsam           | 4.2a9           | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/gtsam/__init__.py
+kornia                    | kornia          | 0.8.2           | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/kornia/__init__.py
+matplotlib                | matplotlib      | 3.10.8          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/matplotlib/__init__.py
+numpy                     | numpy           | 2.2.6           | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/numpy/__init__.py
+onnx                      | onnx            | 1.20.0          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/onnx/__init__.py
+onnxruntime               | onnxruntime     | 1.23.2          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/onnxruntime/__init__.py
+onnxruntime-gpu           | onnxruntime     | 1.23.2          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/onnxruntime/__init__.py
+opencv                    | cv2             | 4.13.0          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/cv2/__init__.py
+pillow                    | PIL             | 12.1.0          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/PIL/__init__.py
+pyceres                   | pyceres         | 2.6             | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/pyceres.cpython-310-x86_64-linux-gnu.so
+pypose                    | pypose          | 0.7.5           | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/pypose/__init__.py
+pyqt6                     | PyQt6           | 13.10.0         | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/PyQt6/__init__.py
+pytorch-cpu               | torch           | 2.9.1           | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/torch/__init__.py
+pytorch-gpu               | torch           | 2.9.1           | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/torch/__init__.py
+rerun                     | rerun           | 1.0.30          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/rerun/__init__.py
+scipy                     | scipy           | 1.15.2          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/scipy/__init__.py
+theseus-ai                | theseus         | 0.2.3           | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/theseus/__init__.py
+torchvision               | torchvision     | 0.24.1          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/torchvision/__init__.py
+tqdm                      | tqdm            | 4.67.1          | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/tqdm/__init__.py
+triton                    | triton          | 3.5.1           | ~/Documents/GitHub/Pytorch-ONNX-CUDA-on-Pixi/.pixi/envs/default/lib/python3.10/site-packages/triton/__init__.py
+--------------------------------------------------------------------------------------------------------------
+
+🖥️ GPU SYSTEM CHECK
+  ├─ GPU Model         : NVIDIA GeForce RTX 4060 Ti
+  ├─ NVIDIA Driver     : 580.95.05
+  ├─ System CUDA       : 12.9
+  ├─ NVCC Version      : 12.9
+  └─ System cuDNN      : 9.1.0.2
+
+📘 OPENCV CHECK
+  ├─ Version           : 4.13.0
+  ├─ Build Type        : Custom
+  ├─ Contrib / NonFree : YES / YES
+  ├─ GPU Device        : Supported ✅
+  └─ OpenCV Test       : PASS (Memory Upload -> Threshold -> Download)
+
+🔥 PYTORCH CHECK
+  ├─ Version           : 2.9.1
+  ├─ GPU Device        : Supported ✅
+  └─ PyTorch Test      : PASS (Tensor Creation + MatMul on GPU)
+
+🚀 ONNX RUNTIME CHECK
+  ├─ Version           : 1.23.2
+  ├─ Providers         : ['TensorrtExecutionProvider', 'CUDAExecutionProvider', 'CPUExecutionProvider']
+  ├─ GPU Device        : Supported ✅
+  └─ ONNX Test         : PASS (CUDAExecutionProvider is registered)
+
+=======================================================
 ```
-.
-├── pixi.toml                         # Dependencies & configuration
-├── script/
-│   ├── benchmark_solver.py           # Compare optimization solvers
-│   ├── check.sh                      # Environment checker
-│   ├── test_torch_cuda.py            # PyTorch GPU test
-│   ├── test_ort_cuda.py              # ONNX Runtime GPU test
-│   ├── link_opencv.sh                # Link system OpenCV (CUDA)
-│   └── opencv_cpu_cuda_benchmark.py  # OpenCV CPU/GPU benchmark
-└── README.md
-```
-
-## 🧩 Key Dependencies
-
-- **Python**: 3.10
-- **PyTorch**: 2.9.1 (CUDA 12.9)
-- **ONNX Runtime GPU**: 1.23.2
-- **CUDA Toolkit**: 12.x
-- **Optimization**: GTSAM, g2o, Ceres, Theseus, PyPose
-- **Vision**: OpenCV, Kornia, Pillow
-- **Tools**: EVO, Matplotlib, Rerun, SciPy
 
 ## 📝 Notes
 

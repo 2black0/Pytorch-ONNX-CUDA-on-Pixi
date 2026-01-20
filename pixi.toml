@@ -28,11 +28,7 @@ pyceres = "*"
 triton = "*"
 
 [pypi-dependencies]
-# --- OPTION 1: Standard CPU (Uncomment for portability) ---
-# opencv-contrib-python = ">=4.8"
-
-# --- OPTION 2: System CUDA
-# use pixi run link-opencv
+#opencv-contrib-python = "*"
 evo = "*"
 g2o-python = "*"
 theseus-ai = "*"
